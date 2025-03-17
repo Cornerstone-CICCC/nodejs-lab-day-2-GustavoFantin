@@ -1,0 +1,83 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout>
+  <h1>Sign Up Here</h1>
+  <form action="/signup" id="signup-form">
+    <label>
+      Username
+      <input
+        type="text"
+        name="username"
+        placeholder="Enter username"
+        id="username-signup"
+      />
+    </label>
+    <label>
+      First Name
+      <input
+        type="text"
+        name="fname"
+        placeholder="Enter first name"
+        id="firstname"
+      />
+    </label>
+    <label>
+      Last Name
+      <input
+        type="text"
+        name="lname"
+        placeholder="Enter last name"
+        id="lastname"
+      />
+    </label>
+    <label>
+      Password
+      <input
+        type="password"
+        name="password"
+        placeholder="Enter password"
+        id="password-signup"
+      />
+    </label>
+    <button type="submit">Sign Up</button>
+  </form>
+</Layout>
+
+<script>
+  const form = document.querySelector("#signup-form") as HTMLFormElement;
+  const username = document.querySelector(
+    "#username-signup"
+  ) as HTMLInputElement;
+  const password = document.querySelector(
+    "#password-signup"
+  ) as HTMLInputElement;
+  const firstname = document.querySelector("#firstname") as HTMLInputElement;
+  const lastname = document.querySelector("#lastname") as HTMLInputElement;
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const res = await fetch(`http://localhost:2500/signup`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({
+        username: username.value,
+        firstname: firstname.value,
+        lastname: lastname.value,
+        password: password.value,
+      }),
+    });
+
+    if (res.ok) {
+      alert("Sign Up successfull!");
+      window.location.href = "/login";
+    } else {
+      alert("Sign up failed.");
+    }
+  });
+</script>
