@@ -1,0 +1,24 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout>
+  <h1>My Website</h1>
+  <h2>Are you new here?</h2>
+  <button id="go-signup">Sign Up</button>
+  <h2>If you have an account...</h2>
+  <button id="go-login">Login</button>
+</Layout>
+
+<script>
+  const loginBtn = document.querySelector("#go-login") as HTMLButtonElement;
+  const signupBtn = document.querySelector("#go-signup") as HTMLButtonElement;
+
+  loginBtn.addEventListener("click", () => {
+    window.location.assign("http://localhost:4321/login");
+  });
+
+  signupBtn.addEventListener("click", () => {
+    window.location.assign("http://localhost:4321/signup");
+  });
+</script>

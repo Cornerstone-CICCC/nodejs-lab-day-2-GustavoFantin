@@ -1,0 +1,71 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout>
+  <h1>Your Profile</h1>
+  <div class="user-info"></div>
+  <button id="test-button">teste</button>
+  <button id="logout">Logout</button>
+</Layout>
+
+<script>
+  const logout = document.querySelector("#logout") as HTMLButtonElement;
+  const test = document.querySelector("#test-button") as HTMLButtonElement;
+  const div = document.querySelector(".user-info") as HTMLDivElement;
+
+  logout.addEventListener("click", async (e) => {
+    e.preventDefault();
+
+    const res = await fetch(`http://localhost:2500/logout`, {
+      method: "GET",
+      credentials: "include",
+    });
+    window.location.href = "/login";
+  });
+
+  const getData = async () => {
+    const res = await fetch(`http://localhost:2500/get-info`, {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!res.ok) {
+      window.location.href = "/login";
+      return;
+    }
+
+    const data = await res.json();
+    console.log("a data", data);
+    div.innerHTML = `
+        <ul>
+        <li>${data.username}</li>
+        <li>${data.firstname}</li>
+        <li>${data.lastname}</li>
+        </ul>
+        `;
+  };
+
+  const checkCookies = async () => {
+    const res = await fetch(`http://localhost:2500/check-auth`, {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!res.ok) {
+      window.location.href = "/login";
+      return;
+    }
+  };
+
+  document.addEventListener("DOMContentLoaded", () => {
+    checkCookies();
+    getData();
+  });
+</script>
